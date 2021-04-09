@@ -1,0 +1,86 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+
+    		<link rel="stylesheet" type="text/css" href="css/bulma.min.css"/>
+    		<link rel="stylesheet" type="text/css" href="css/dc.css"/>
+<style type="text/css">
+.dc-chart g.row text {
+	fill: #000;
+}
+
+.dc-chart g.row .deselected + text {
+	fill: #555;
+}
+</style>
+		<title>ERIARVOISUUSVARASTO avaukset</title>
+	</head>
+	<body>
+		<div id="loader" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; position: fixed; background-color: white; z-index: 100">
+		<div class="loader" style="width: 100px; height: 100px;"></div>
+		</div>
+		<nav class="navbar">
+
+			<div class="navbar-brand">
+				<div class="navbar-item">
+				<a href="https://www.facebook.com/groups/485003524967015/" target="_blank">ERIARVOISUUSVARASTO</a></div>
+				<div class="navbar-item">avausanalyysi</div>
+			</div>
+			<div class="navbar-end">
+				<a class="button" href="javascript:dc.filterAll(); dc.redrawAll();">Poista kaikki suotimet</a>
+			</div>
+		</nav>
+		<div class="container">
+<div class="columns">
+	<div class="column">
+		<div id="timeseries-info"></div>
+    <div id="timeseries-chart">
+	<!--<a class="reset" href="javascript:timechart.filterAll();dc.redrawAll();" style="display: none;">reset</a>-->
+
+    </div>
+	</div>
+</div>
+<div class="columns">
+	<div class="column">
+		<div id="pubtype-chart">
+			<div><strong>Julkaisutyyppi</strong>
+				<a class="reset" href="javascript:pubtypechart.filterAll();dc.redrawAll();" style="display: none;">kaikki</a></div>
+		</div>
+	</div>
+	<div class="column">
+		<div id="publisher-chart">
+		<div><strong>Julkaisija</strong>
+        	<a class="reset" href="javascript:publisherchart.filterAll();dc.redrawAll();" style="display: none;">kaikki</a></div>
+		</div>
+	</div>
+	<div class="column">
+		<div id="interest-chart">
+			<div><strong>Eturyhmä</strong>
+				<a class="reset" href="javascript:interestchart.filterAll();dc.redrawAll();" style="display: none;">kaikki</a></div>
+		</div>
+	</div>
+	<div class="column">
+		<div id="domain-chart">
+			<div><strong>Lähteet top-10</strong>
+				<a class="reset" href="javascript:domainchart.filterAll();dc.redrawAll();" style="display: none;">kaikki</a></div>
+		</div>
+	</div>
+</div>
+<div class="columns">
+	<div class="column">
+<div><strong>Uusimmat avaukset valituista</strong></div>
+   <table class="table table-hover dc-data-table" style="width: 100%; overflow: scroll;">
+   </table>
+ </div>
+</div>
+</div>
+	
+	<script type="text/javascript" src="js/coffeescript.js"></script>
+	<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="js/d3.js"></script>
+	<script type="text/javascript" src="js/crossfilter.js"></script>
+	<script type="text/javascript" src="js/dc.js"></script>
+
+	<script type="text/coffeescript" src="eriarvoisuus.coffee"></script>
+	</body>
+</html>
