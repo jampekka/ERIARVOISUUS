@@ -24,12 +24,15 @@ d3.csv("posts.csv").then (data) ->
 	timeDimension = ndx.dimension (d) -> d.dd
 	weekDimension = ndx.dimension (d) -> d.week
 	pubtypeDimension = ndx.dimension (d) ->
-		return "Linkitön" if not d.link
+		if not d.link
+			if d.share_id
+				return "Jako"
+			return "Teksti tai kuva"
 		{
 			"story": "Juttu",
 			"press_release": "Tiedote",
 			"article": "Tutkimusartikkeli"
-		}[d.publication] ? "Luokaton"
+		}[d.publication] ? "Luokaton linkki"
 
 	publisherDimension = ndx.dimension (d) ->
 		return "Linkitön" if not d.link

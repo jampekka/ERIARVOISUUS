@@ -30,7 +30,11 @@ for post in posts:
             'reactions': post['likes'],
             'link': post['link'],
             'comments': post['comments'],
-            'domain': domain
+            'domain': domain,
+            'shares': post['shares'],
+            'share_id': post['shared_post_id'],
+            'has_images': bool(post['images']),
+            'video_id': post['video_id']
     }
 
     for cat, tag in cats.items():
