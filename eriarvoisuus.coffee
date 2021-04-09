@@ -157,8 +157,6 @@ d3.csv("posts.csv").then (data) ->
 	publisherGroup = publisherDimension.group()
 	publisherchart
 		.height height
-		.width height
-		#.radius height/2
 		.transitionDuration transdur
 		.dimension publisherDimension
 		.elasticX true
@@ -170,8 +168,6 @@ d3.csv("posts.csv").then (data) ->
 	window.interestchart = dc.rowChart "#interest-chart"
 	interestchart
 		.height height
-		#.width height
-		#.radius height/2
 		.transitionDuration transdur
 		.dimension interestDimension
 		.elasticX true
