@@ -5,7 +5,7 @@ dateFormat = d3.isoFormat
 dateDisplayFormat = d3.timeFormat("%d.%m.%Y %H:%M:%S")
 dateOnlyDisplayFormat = d3.timeFormat("%d.%m.%Y")
 dateFormatParser = d3.isoParse
-numberFormat = d3.format('.2f')
+numberFormat = d3.format('.1f')
 
 dc.config.defaultColors(d3.schemeTableau10)
 d3.csv("posts.csv").then (data) ->
@@ -15,7 +15,7 @@ d3.csv("posts.csv").then (data) ->
 		d.reactions = +d.reactions
 		d.comments = +d.comments
 	
-	start_date = new Date 2016, 1, 1
+	start_date = new Date 2015, 1, 1
 	data = data.filter (d) ->
 		d.dd > start_date
 	
@@ -72,6 +72,8 @@ d3.csv("posts.csv").then (data) ->
 	
 	total_posts = ndx.size()
 	total_selected = ndx.groupAll()
+	likesPerPostTotal = ndx.groupAll().reduce averager((d) -> d.reactions)...
+	commentsPerPostTotal = ndx.groupAll().reduce averager((d) -> d.comments)...
 	
 	time_extent = d3.extent data, (d) -> d.dd
 	height = 250
@@ -89,11 +91,16 @@ d3.csv("posts.csv").then (data) ->
 		dur = (e - s)/_MS_PER_DAY
 
 		selected = total_selected.value()
+		console.log()
 		h = """
-			<strong>Tarkasteluväli #{Math.floor dur} päivää</strong>
+			<strong>Tarkasteluväli #{Math.floor dur}</strong> päivää
 			(#{dateOnlyDisplayFormat(s)} - #{dateOnlyDisplayFormat(e)}).
-			Valinnoilla <strong>#{selected}</strong> avausta
-			(<strong>#{numberFormat(selected/dur)}</strong> avausta päivässä)
+			Valinnoilla <strong>#{selected}</strong> avausta.
+			<strong>#{numberFormat(selected/dur)}</strong> avausta päivässä.
+			<strong style='color: blue'>#{numberFormat(likesPerPostTotal.value().average)}</strong> reaktiota
+			ja
+			<strong style='color: orange'>#{numberFormat(commentsPerPostTotal.value().average)}</strong> kommenttia
+			per avaus.
 		"""
 		timeinfo.innerHTML = h
 	timechart
