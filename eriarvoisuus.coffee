@@ -21,7 +21,7 @@ d3.csv("posts.csv").then (data) ->
 	
 	ndx = crossfilter(data)
 	
-	timeDimension = ndx.dimension (d) -> d.post_id
+	timeDimension = ndx.dimension (d) -> d.dd
 	weekDimension = ndx.dimension (d) -> d.week
 	pubtypeDimension = ndx.dimension (d) ->
 		return "Linkitön" if not d.link
@@ -192,7 +192,7 @@ d3.csv("posts.csv").then (data) ->
 	fb_group_id = "485003524967015"
 	datatable
 		.dimension(timeDimension)
-		.order (d) -> d.dd
+		.order d3.descending
 		.columns [
 			{label: "Ajankohta", format: (d) ->
 				url = "https://www.facebook.com/groups/#{fb_group_id}/permalink/#{d.post_id}/"
