@@ -81,10 +81,12 @@ d3.csv("posts.csv").then (data) ->
 	time_extent = d3.extent data, (d) -> d.dd
 	height = 250
 	transdur = 1000
+	tablelimit = 100
 	
 	window.timechart = dc.compositeChart("#timeseries-chart")
 	timeinfo = document.getElementById("timeseries-info")
 	actinfo = document.getElementById("activity-info")
+	tablecounts = document.getElementById("table-counts")
 	_MS_PER_DAY = 1000 * 60 * 60 * 24
 	update_timeinfo = ->
 		timefilt = timechart.filter()
@@ -95,7 +97,6 @@ d3.csv("posts.csv").then (data) ->
 		dur = (e - s)/_MS_PER_DAY
 
 		selected = total_selected.value()
-		console.log()
 		timeinfo.innerHTML = """
 			<strong>Tarkasteluväli #{Math.floor dur}</strong> päivää
 			(#{dateOnlyDisplayFormat(s)} - #{dateOnlyDisplayFormat(e)}).
@@ -108,6 +109,9 @@ d3.csv("posts.csv").then (data) ->
 			<strong style='color: orange'>#{numberFormat(commentsPerPostTotal.value().average)}</strong> kommenttia
 			per avaus.
 		"""
+
+		in_table = Math.min selected, tablelimit
+		tablecounts.innerHTML = "#{in_table}/#{selected}"
 	
 
 	timechart
@@ -249,6 +253,7 @@ d3.csv("posts.csv").then (data) ->
 	datatable
 		.dimension(timeDimension)
 		.order d3.descending
+		.size tablelimit
 		.columns [
 			{label: "Ajankohta", format: (d) ->
 				url = "https://www.facebook.com/groups/#{fb_group_id}/permalink/#{d.post_id}/"
@@ -265,6 +270,7 @@ d3.csv("posts.csv").then (data) ->
 			{label: "Julkaisija", format: (d) -> publisherDimension.accessor(d)}
 			{label: "Eturyhmä", format: (d) -> interestDimension.accessor(d)}
 		]
+		
 	dc.renderAll()
 	d3.select("#loader").style("display", "none")
 
