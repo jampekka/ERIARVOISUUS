@@ -259,7 +259,7 @@ d3.csv("posts.csv").then (data) ->
 			{label: "Lähde", format: (d) ->
 				return "Linkitön" if not d.link
 				url = d.link
-				"<a href=\"#{url}\" target=\"blank_\">#{d.domain}</a>"
+				"<a href=\"#{url}\" target=\"_blank\">#{d.domain}</a>"
 			}
 			{label: "Julkaisutyyppi", format: (d) -> pubtypeDimension.accessor(d)}
 			{label: "Julkaisija", format: (d) -> publisherDimension.accessor(d)}
