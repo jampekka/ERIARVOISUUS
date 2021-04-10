@@ -3,6 +3,13 @@ import yaml
 import json
 from urllib.parse import urlparse
 from collections import defaultdict
+import requests
+requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL:@SECLEVEL=1'
+from urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+import requests_cache
+
+
 
 publication_types = ('press_release', 'article', 'story')
 institution_types = ('private', 'journal', 'university', 'go', 'ngo', 'personal')
@@ -15,6 +22,8 @@ categories = {
         }
 
 categorization = yaml.load(open("categories.yaml"))
+session = requests_cache.CachedSession("post_links_cache")
+
 
 def get_tag_category(tag):
     for category, types in categories.items():
@@ -34,13 +43,21 @@ def structure_categories(catstring):
     return cats
 
 def get_categories(url):
+    if not url: return {}, None
+    """
+    try:
+        content = session.get(url, verify=False)
+    except Exception as e:
+        print("Fetch failed:", e)
+    """
     domain = str(urlparse(url).netloc)
     domain = "." + domain # Hack
     for trial, cats in categorization.items():
         if domain.endswith(trial):
+            domain = domain
             cats = structure_categories(cats)
-            return cats
-    return {}
+            return cats, domain
+    return {}, domain
 
 def find_uncategorized():
     data = (json.loads(l) for l in open("posts.jsons"))

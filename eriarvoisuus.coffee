@@ -31,7 +31,7 @@ d3.csv("posts.csv").then (data) ->
 		{
 			"story": "Juttu",
 			"press_release": "Tiedote",
-			"article": "Tutkimusartikkeli"
+			"article": "Akateeminen"
 		}[d.publication] ? "Luokaton linkki"
 
 	publisherDimension = ndx.dimension (d) ->
