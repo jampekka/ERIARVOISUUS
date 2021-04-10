@@ -54,7 +54,7 @@ def get_categories(url):
     domain = "." + domain # Hack
     for trial, cats in categorization.items():
         if domain.endswith(trial):
-            domain = domain
+            domain = trial
             cats = structure_categories(cats)
             return cats, domain
     return {}, domain
