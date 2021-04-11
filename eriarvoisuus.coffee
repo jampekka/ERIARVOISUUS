@@ -187,7 +187,7 @@ d3.csv("posts.csv").then (data) ->
 	actchart.onClick = ->
 
 	nticks = 3
-	margins = left: 5, right: 5, top: 5, bottom: 50
+	margins = left: 20, right: 10, top: 5, bottom: 50
 
 	labeler = (d) ->
 		d.key
@@ -248,6 +248,40 @@ d3.csv("posts.csv").then (data) ->
 		.margins margins
 		.xAxis().ticks nticks
 	
+	###
+	getWeekday = (d) ->
+		weekdayno = (d.dd.getDay() + 1)%7
+		names = ["Ma", "Ti", "Ke", "To", "Pe", "La", "Su"]
+		return "#{weekdayno}.#{names[weekdayno]}"
+	
+	getTod = (d) ->
+		h = d.dd.getHours()
+		return h
+	weekday = ndx.dimension (d) ->
+		[getWeekday(d), getTod(d)]
+	
+	heatColorMapping = d3.scaleLinear()
+		.range(["white", "green"])
+	
+	heatColorRange = (chart) ->
+		wtf = d3.extent(chart.data(), chart.colorAccessor())
+		console.log wtf
+		chart.colorDomain d3.extent(chart.data(), chart.colorAccessor())
+
+	window.dateheat = dc.heatMap "#date-heat"
+	dateheat
+		.height height
+		.transitionDuration transdur
+		.dimension weekday
+		.group weekday.group().reduceCount()
+		.keyAccessor (d) -> d.key[0]
+		.valueAccessor (d) -> d.key[1]
+		.colorAccessor (d) -> d.value
+		.colors heatColorMapping
+		.on "preRender", heatColorRange
+		.on "preRedraw", heatColorRange
+		.margins margins
+	###
 	window.datatable = dc.dataTable(".dc-data-table")
 	fb_group_id = "485003524967015"
 	datatable
@@ -268,7 +302,7 @@ d3.csv("posts.csv").then (data) ->
 			}
 			{label: "Julkaisutyyppi", format: (d) -> pubtypeDimension.accessor(d)}
 			{label: "Julkaisija", format: (d) -> publisherDimension.accessor(d)}
-			{label: "Eturyhmä", format: (d) -> interestDimension.accessor(d)}
+			#{label: "Eturyhmä", format: (d) -> interestDimension.accessor(d)}
 		]
 		
 	dc.renderAll()
